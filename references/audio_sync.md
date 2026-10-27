@@ -18,10 +18,10 @@ Use this mode when creating standalone geometric proofs, calculus intuitions, GI
 ### Mode 2: Audio + Animation (The YouTube Explainer & Masterclass Pipeline)
 Use this mode when generating narrated instructional videos, tutorials, or YouTube explainers.
 - **Master Protocol Reference**: See **[youtube_explainer_workflow.md](youtube_explainer_workflow.md)** for the full 6-phase lifecycle:
-  1. **Phase 0 (Intake)**: Prompt user for duration, topic/thesis, audience level, visual style, and voice.
+  1. **Phase 0 (Intake & Grilling)**: Prompt user for duration, topic/thesis, audience level, visual style, and **always grill the user** on whether to proceed with **Kokoro TTS** or **Voice-Clone**. If voice clone, ask which accent or person voice profile from `assets/audio-references/` (e.g. `american`, `harendra`) to pass via `--voice <voice_name>` to `scripts/voice_clone_pipeline.py`.
   2. **Phase 1 (Script & Storyboard)**: Write `scripts/<Topic>_YouTube_Script.md` with tri-fold table (Visual Direction with Manim mobjects, Spoken Narration, Sound Design SFX).
   3. **Phase 2 (User Review Gate)**: Present script to user and STOP for review/approval before proceeding.
-  4. **Phase 3 (Studio TTS & Alignment)**: Synthesize audio via Kokoro ONNX, filter with 80Hz rumble cut, peak normalize, and align with Faster-Whisper to `timing.json`.
+  4. **Phase 3 (Studio Narration & Alignment)**: Synthesize audio via Kokoro ONNX (`generate_audio.py`) or Qwen3-TTS Voice Cloning (`scripts/voice_clone_pipeline.py --voice <name>`), filter with 80Hz rumble cut, peak normalize, and align with Faster-Whisper to `timing.json`.
   5. **Phase 4 (Manim Choreography)**: Orchestrate scene with `sync_to(target_time)` and programmatic indentation code boxes (`make_wire_box`).
   6. **Phase 5 (Verification & Delivery)**: Monotonicity check, dry-run `manim -s`, full 1080p render, and snapshot visual audit.
 

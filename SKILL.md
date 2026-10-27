@@ -1,6 +1,6 @@
 ---
 name: manim
-description: Comprehensive guide for Manim Community - Python framework for creating highly animated, detailed mathematical and technical explainer videos in the 3Blue1Brown visual craft. Enforces an elite YouTube explainer workflow: mandatory pre-production user intake prompts (duration, topic, tone), script-first tri-fold storyboarding with explicit scene animations, mandatory user review gates, Kokoro studio audio sync, and anti-AI-slop design.
+description: Comprehensive guide for Manim Community - Python framework for creating highly animated, detailed mathematical and technical explainer videos in the 3Blue1Brown visual craft. Enforces an elite YouTube explainer workflow: mandatory pre-production user intake prompts (duration, topic, tone, and mandatory grilling for audio engine: Kokoro-TTS vs Qwen3 Voice-Clone with specific voice/accent selection), script-first tri-fold storyboarding with explicit scene animations, mandatory user review gates, Kokoro / Qwen3 studio audio sync, and anti-AI-slop design.
 license: MIT
 version: 1.0.0
 author: manim-community
@@ -132,7 +132,7 @@ This skill supports two distinct production modes:
 
 2. **Mode 2: Audio + Animation (The YouTube Explainer & Masterclass Pipeline)**:
    - For high-retention educational YouTube videos, system architecture deep dives, tutorials, and lecture series.
-   - Follows the mandatory 6-phase protocol: **Intake Prompting ➔ Script & Scene Storyboarding ➔ User Review Gate ➔ Studio TTS & Alignment ➔ Manim Choreography ➔ Render & Visual Audit**.
+   - Follows the mandatory 6-phase protocol: **Intake Prompting (with Audio Grilling: Kokoro TTS vs Voice-Clone) ➔ Script & Scene Storyboarding ➔ User Review Gate ➔ Studio TTS & Alignment ➔ Manim Choreography ➔ Render & Visual Audit**.
    - Complete guide and templates: **[references/youtube_explainer_workflow.md](references/youtube_explainer_workflow.md)**.
 
 ---
@@ -150,7 +150,11 @@ Before writing any script or code, **prompt the user** for key production variab
    - *Deep-Dive Masterclass (8–12+ mins)*: Exhaustive architectural/mathematical deconstruction, wire-level inspections, failure modes, trade-offs, 8–10 scenes.
 3. **Target Audience & Tone**: Junior / Student vs. Senior / Staff Engineer; high-energy, punchy, conversational YouTuber storytelling (caliber of *3Blue1Brown*, *Veritasium*, *Fireship*).
 4. **Visual Style & Animation Priorities**: Pure black canvas (`#000000`), dynamic network packet flows, code wire-inspection boxes, coordinate transforms, etc.
-5. **Narration Voice & Audio**: Kokoro voice (`af_bella` crisp modern YouTube tone, or `am_michael` authoritative professorial tone) at `0.98x` pacing.
+5. **Narration Voice & Audio Engine (MANDATORY USER GRILLING)**:
+   - **ALWAYS grill the user** on whether to proceed with **Kokoro TTS** or **Voice-Clone** (`Qwen3-TTS 0.6B`):
+     - *If Kokoro TTS*: Ask for Kokoro voice persona (`af_bella` crisp modern YouTube tone, or `am_michael` authoritative professorial tone) at `0.98x` pacing.
+     - *If Voice-Clone*: Ask which accent or person voice profile should be used from `assets/audio-references/` (e.g. `american`, `harendra`, or a newly added speaker directory). When generating audio, the agent **MUST** pass this voice profile name via the command line argument `--voice <voice_name>`:
+       `python scripts/voice_clone_pipeline.py --voice <voice_name> --scenes scripts/scenes.json --output-dir voice/`
 
 ### Phase 1: Expert YouTuber Scriptwriting & Scene Storyboard
 The agent acts as an **Elite YouTube Explainer Scriptwriter and Director**:
@@ -173,7 +177,17 @@ Present the script file `scripts/<Topic_Name>_YouTube_Script.md` to the user and
 **Wait for the user's review and explicit approval before continuing.**
 
 ### Phase 3: Studio Narration Synthesis & Faster-Whisper Alignment
-Once approved, run `generate_audio.py` using Kokoro ONNX (`af_bella` or `am_michael` @ `0.98x`), apply 80Hz Butterworth rumble filter + -1.0 dB peak normalization, and extract word-level timestamps with Faster-Whisper into `timing.json`.
+Once approved, synthesize audio based on the chosen engine:
+- **Kokoro ONNX Engine**: Run `generate_audio.py` using Kokoro ONNX (`af_bella` or `am_michael` @ `0.98x`).
+- **Qwen3-TTS Voice Clone Engine**: Run `scripts/voice_clone_pipeline.py` passing the user-selected voice profile via command line:
+  ```bash
+  # Single scene / text:
+  python scripts/voice_clone_pipeline.py --voice <voice_name> --text "..." --output voice/scene_1.wav
+  # Multi-scene batch:
+  python scripts/voice_clone_pipeline.py --voice <voice_name> --scenes scripts/scenes.json --output-dir voice/
+  ```
+  Voice references are loaded automatically from `assets/audio-references/<voice_name>/` (`reference_audio.*` and `reference_text.txt`).
+- **Post-Processing & Alignment**: Apply 80Hz Butterworth rumble filter + -1.0 dB peak normalization, and extract word-level timestamps with Faster-Whisper into `timing.json`.
 
 ### Phase 4: High-Density Manim Scene Implementation
 Implement the scene in `anim/scenes/<topic>.py`:
@@ -200,7 +214,7 @@ Read individual reference files for detailed explanations and code examples:
 - **[references/youtube_explainer_workflow.md](references/youtube_explainer_workflow.md)** - **The Complete YouTube Explainer & Masterclass Workflow**: The 6-phase protocol from user intake prompts, tri-fold scriptwriting with scene animations, user review gate, to studio sync and audit.
 - **[design.md](design.md)** (or **[references/design.md](references/design.md)**) - **STRICT 3Blue1Brown visual aesthetic & anti-AI-slop rules**: bans rounded boxes/containers for simple text, bans top `//` headings, defines screen composition geometry and centering, the 3b1b color palette, updaters, dynamic motion, and camera choreography.
 - **[references/audio_sync.md](references/audio_sync.md)** - **Studio audio generation & animation synchronization**: Kokoro ONNX TTS synthesis, Faster-Whisper word-level alignment, timestamp-locked Manim scene orchestration, and pre-render sync audit.
-- **[references/voice_cloning_qwen3.md](references/voice_cloning_qwen3.md)** - **Qwen3-TTS 0.6B Voice Cloning**: Zero-shot voice cloning from 3-10s user reference audio (`reference_audio.wav` + `reference_text.txt`) for personalized studio explainer narration.
+- **[references/voice_cloning_qwen3.md](references/voice_cloning_qwen3.md)** - **Qwen3-TTS 0.6B Voice Cloning**: Zero-shot voice cloning from 3-10s user reference audio organized by voice/accent profile in `assets/audio-references/<voice_name>/` (`reference_audio.*` + `reference_text.txt`) via `scripts/voice_clone_pipeline.py --voice <voice_name>`.
 
 ### Core Concepts & Mechanics
 - **[references/scenes.md](references/scenes.md)** - Creating scenes and organizing animations
@@ -378,7 +392,7 @@ Render with: `manim -pql script.py TangentIntuition`
 
 ## Best Practices
 
-1. **Mandatory Intake Prompting (Phase 0)** - Before writing any script or code, clarify/confirm key parameters with the user: topic/thesis, target duration/depth (Short 2-3m, Standard 5-7m, Masterclass 8-12m), target audience, visual priorities, and voice preference.
+1. **Mandatory Intake Prompting & Audio Grilling (Phase 0)** - Before writing any script or code, clarify/confirm key parameters with the user: topic/thesis, target duration/depth (Short 2-3m, Standard 5-7m, Masterclass 8-12m), target audience, visual priorities, and **always grill the user** on whether to proceed with **Kokoro TTS** or **Voice-Clone**. If voice clone, ask which accent or person voice profile from `assets/audio-references/` (e.g. `american`, `harendra`) to pass via `--voice <voice_name>` to `scripts/voice_clone_pipeline.py`.
 2. **Script-First with Tri-Fold Storyboarding (Phase 1)** - Always generate `scripts/<Topic>_YouTube_Script.md` first. Include explicit visual direction with Manim mobjects/flows, spoken narration written for the ear, and sound design SFX cues.
 3. **Mandatory User Review Gate (Phase 2)** - STOP and ask the user for review of the script file before generating audio or writing animation code. Never skip this approval checkpoint.
 4. **Mandatory Pure Black Background** - Always set `self.camera.background_color = BLACK` (or `config.background_color = BLACK`).

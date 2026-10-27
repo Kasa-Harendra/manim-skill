@@ -45,7 +45,7 @@ Traditional AI-generated animations often suffer from **AI slop**: washed-out gr
 This repository changes that by enforcing an elite, mathematically grounded animation workflow:
 
 - **Pure Black Canvas (`#000000`)**: Deep contrast, vivid function curves, zero washed-out background tones.
-- **Zero-Shot Voice Cloning**: Clones your voice from a 3–10 second sample (`assets/voice_clone/reference_audio.*`) using **Qwen3-TTS 0.6B** (`Qwen/Qwen3-TTS-12Hz-0.6B-Base`) on Apple Silicon (MPS), NVIDIA CUDA, or CPU.
+- **Zero-Shot Voice Cloning**: Clones human voices from 3–10 second samples organized in `assets/audio-references/<voice_name>/` using **Qwen3-TTS 0.6B** (`Qwen/Qwen3-TTS-12Hz-0.6B-Base`) via `scripts/voice_clone_pipeline.py --voice <name>` on Apple Silicon (MPS), NVIDIA CUDA, or CPU.
 - **Word-Level Audio Synchronization**: Millisecond-accurate word boundaries extracted via **Faster-Whisper** (`timing.json`) drive Manim transformations exactly when words are spoken.
 - **Tri-Fold Storyboard Protocol**: Narrative arc structured with cold-open hooks, visual direction, spoken script, and SFX cues before a single line of code is written.
 - **Mandatory User Review Gate**: Script and storyboard are presented for explicit creator sign-off before rendering.
@@ -99,31 +99,44 @@ pip install -r requirements.txt
 
 ---
 
-### 3. Voice Cloning Setup (Qwen3-TTS)
+### 3. Voice Cloning Setup (Qwen3-TTS & `assets/audio-references/`)
 
-This skill features an automated voice cloning pipeline located in `assets/voice_clone/`:
+This skill features an automated voice cloning pipeline located in `scripts/voice_clone_pipeline.py`. Human voice references and accents are organized into folders within `assets/audio-references/`:
 
-1. **Record a 3–10 second voice sample** of yourself speaking naturally in a quiet environment.
-   - Example sentence:
-     > *"Welcome back! Today we are exploring the mathematical foundations of transformer attention mechanisms and how neural networks process sequences."*
-2. **Save the audio sample** to:
-   ```text
-   assets/voice_clone/reference_audio.wav   # (or .mp3 / .m4a)
-   ```
-3. **Save the exact transcript** of what you said in that sample to:
-   ```text
-   assets/voice_clone/reference_text.txt
-   ```
+```text
+assets/audio-references/
+├── american/
+│   ├── reference_audio.mp3       # 3–10s audio sample (.wav, .mp3, .m4a)
+│   └── reference_text.txt        # Exact transcript of the sample
+└── harendra/
+    ├── reference_audio.m4a       # 3–10s audio sample
+    └── reference_text.txt        # Exact transcript of the sample
+```
 
-> 🔒 **Privacy Guarantee**: All `reference_audio*` and `reference_text*` files in `assets/` are excluded by `.gitignore` so your personal voice samples and transcripts are **never committed or pushed to GitHub**.
+To add a new voice:
+1. Create a directory: `assets/audio-references/<voice_name>/`.
+2. Save a clean 3–10 second voice recording as `reference_audio.wav` (or `.mp3` / `.m4a`).
+3. Save the exact verbatim transcript as `reference_text.txt`.
 
-To test voice cloning:
+> 🔒 **Privacy Guarantee**: All `reference_audio*` and `reference_text*` files in `assets/` are excluded by `.gitignore` so personal voice samples and transcripts are **never committed or pushed to GitHub**.
+
+To test voice cloning from the command line:
+```bash
+# List available voices
+python scripts/voice_clone_pipeline.py --list-voices
+
+# Synthesize speech with a specific voice
+python scripts/voice_clone_pipeline.py --voice harendra --text "Welcome to this visual walkthrough of gradient descent." --output voice/test_voice.wav
+```
+
+Or via Python:
 ```python
-from assets.voice_clone.voice_clone_pipeline import clone_voice
+from scripts.voice_clone_pipeline import clone_voice
 
 clone_voice(
     text="Welcome to this visual walkthrough of gradient descent.",
-    output_wav_path="output/test_voice.wav"
+    output_wav_path="output/test_voice.wav",
+    voice="harendra",
 )
 ```
 
@@ -193,7 +206,7 @@ Using the manim skill, let's create a complete YouTube Explainer video:
 Topic: How Transformer Self-Attention Actually Works (Query, Key, Value)
 Target Duration: 5–7 minutes (Standard Explainer)
 Target Audience: Software engineers transitioning into AI/ML
-Narration Voice: Use my cloned voice in assets/voice_clone/
+Narration Voice: Voice clone (profile: harendra)
 Visual Aesthetic: Pure black canvas (#000000), dynamic vector projections, zero AI slop, no rounded boxes around math.
 
 Please execute Phase 0 (confirm key production variables) and Phase 1 (generate the complete Tri-Fold Script and Storyboard in scripts/Transformer_Attention_Script.md).
@@ -308,11 +321,15 @@ manim-skill/
 ├── .gitignore                        # Git ignore rules (protects user reference voice/text)
 ├── assets/
 │   ├── icons/                        # Vector assets, SVGs, and brand icons
-│   └── voice_clone/
-│       ├── voice_clone_pipeline.py   # Qwen3-TTS zero-shot synthesis engine
-│       ├── README.md                 # Voice setup instructions
-│       ├── reference_audio.*         # [GITIGNORED] Your voice sample (wav/mp3/m4a)
-│       └── reference_text.txt        # [GITIGNORED] Transcript of your voice sample
+│   └── audio-references/             # Voice reference samples & transcripts by speaker
+│       ├── american/
+│       │   ├── reference_audio.mp3   # [GITIGNORED] 3-10s voice clip
+│       │   └── reference_text.txt    # [GITIGNORED] Exact transcript
+│       └── harendra/
+│           ├── reference_audio.m4a   # [GITIGNORED] 3-10s voice clip
+│           └── reference_text.txt    # [GITIGNORED] Exact transcript
+├── scripts/
+│   └── voice_clone_pipeline.py       # Qwen3-TTS 0.6B voice cloning engine & CLI
 ├── plugins/
 │   └── manim_brand_icons/            # Built-in tech & AI brand icon extension
 └── references/                       # 26 in-depth guides for every domain plugin

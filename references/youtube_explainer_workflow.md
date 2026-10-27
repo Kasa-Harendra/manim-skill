@@ -35,9 +35,11 @@ Before generating any script, audio, or animation code, the agent **MUST** confi
 4. **Visual Direction & Animation Priorities**:
    - 3Blue1Brown pure black canvas (`#000000`).
    - What diagrams are central? (e.g., live packet flows, network topologies, coordinate transforms, dynamic JSON/code wire boxes, state machines).
-5. **Narration Voice & Audio Persona**:
-   - Kokoro ONNX voice: `af_bella` (crisp, modern, high-engagement YouTube tone) or `am_michael` (authoritative, deep, professorial tone).
-   - Target speed: `0.98x` (deliberate, relaxed pacing allowing complex visuals to breathe).
+5. **Narration Voice & Audio Engine (MANDATORY USER GRILLING)**:
+   - The agent **MUST ALWAYS GRILL** the user on whether to proceed with **Kokoro TTS** or **Qwen3-TTS Voice Clone**:
+     - *If Kokoro TTS*: Ask for voice persona (`af_bella` crisp modern YouTube tone vs `am_michael` authoritative professorial tone) at `0.98x` pacing.
+     - *If Voice Clone*: Ask which accent or person voice profile from `assets/audio-references/` should be used (e.g., `american`, `harendra`, or a newly added speaker directory).
+     - When generating audio, the agent **MUST** supply the chosen voice name via the command line argument `--voice <voice_name>` to `scripts/voice_clone_pipeline.py`.
 
 ---
 
@@ -88,11 +90,18 @@ Before writing any Manim code, generating audio, or running rendering pipelines,
 
 ## Phase 3: Studio Narration Synthesis & Faster-Whisper Alignment
 
-Once the script is approved:
+Once the script is approved, synthesize audio with the chosen engine:
 
-1. **TTS Synthesis (`generate_audio.py`)**:
-   - Use Kokoro ONNX (`af_bella` or `am_michael` @ `0.98x`).
-   - Add 0.6s lead-in and 1.0s scene transition silence buffers.
+1. **Narration Synthesis**:
+   - **Option A (Kokoro ONNX Engine)**:
+     - Run `generate_audio.py` using Kokoro ONNX (`af_bella` or `am_michael` @ `0.98x`).
+     - Add 0.6s lead-in and 1.0s scene transition silence buffers.
+   - **Option B (Qwen3-TTS Voice Clone Engine)**:
+     - Run `scripts/voice_clone_pipeline.py` supplying the user-chosen voice name:
+       ```bash
+       python scripts/voice_clone_pipeline.py --voice <voice_name> --scenes scripts/scenes.json --output-dir voice/
+       ```
+     - Automatically resolves reference audio and transcript from `assets/audio-references/<voice_name>/`.
 2. **Audio Engineering**:
    - 4th-order Butterworth high-pass filter at 80Hz (eliminates sub-bass rumble).
    - Peak normalization to `-1.0 dB` (guarantees YouTube broadcast loudness without clipping).
