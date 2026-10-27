@@ -1,0 +1,70 @@
+# ==============================================================================
+# User Reference Files (Audio & Text)
+# ==============================================================================
+assets/**/reference_audio*
+assets/**/reference_text*
+assets/reference_audio*
+assets/reference_text*
+reference_audio*
+reference_text*
+
+# Generated narration and temporary audio outputs
+voice_clone_output/
+output/
+timing.json
+
+# ==============================================================================
+# Manim Community Media & Renders
+# ==============================================================================
+media/
+videos/
+images/
+tex_cache/
+_temp/
+
+# ==============================================================================
+# Python & Environment Artifacts
+# ==============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+.env
+.venv
+env/
+venv/
+ENV/
+
+# ==============================================================================
+# OS & Editor Artifacts
+# ==============================================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/

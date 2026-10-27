@@ -1,0 +1,39 @@
+# Core Animation Engine
+manim>=0.19.0
+cairosvg>=2.7.0
+networkx>=3.0
+pymunk>=6.5.0
+trimesh>=4.0.0
+requests>=2.31.0
+
+# Manim Community Domain Extensions
+simplepycons>=1.16.0
+manim-physics>=0.2.4
+manim-data-structures>=0.1.7
+manim-progress-bar>=0.2.0
+manim-fontawesome>=0.1.0
+manim-fonts>=0.1.0
+manim-onlinetex>=0.1.0
+
+# Optional Domain Plugins (installed as needed)
+# manim-Astronomy>=0.0.5
+manim-automata>=0.2.11
+manim-neural-network>=0.1.0
+# manim-tikz>=0.1.0
+manim-weighted-line>=0.1.0
+chanim>=0.1.0
+llmanim>=0.1.0
+# vedo>=2024.5.1
+
+# Voice Cloning & Audio Synchronization
+torch>=2.2.0
+torchaudio>=2.2.0
+transformers>=4.40.0
+accelerate>=0.28.0
+soundfile>=0.12.1
+faster-whisper>=1.0.0
+scipy>=1.12.0
+numpy>=1.26.0
+
+# Local Plugin
+-e ./plugins/manim_brand_icons

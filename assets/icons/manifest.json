@@ -1,0 +1,134 @@
+{
+  "chatgpt": {
+    "title": "ChatGPT (OpenAI)",
+    "color": "#10A37F",
+    "svg": "assets/icons/svg/chatgpt.svg",
+    "png": "assets/icons/png/chatgpt.png"
+  },
+  "openai": {
+    "title": "OpenAI",
+    "color": "#10A37F",
+    "svg": "assets/icons/svg/openai.svg",
+    "png": "assets/icons/png/openai.png"
+  },
+  "gemini": {
+    "title": "Google Gemini",
+    "color": "#8E75B2",
+    "svg": "assets/icons/svg/gemini.svg",
+    "png": "assets/icons/png/gemini.png"
+  },
+  "google_gemini": {
+    "title": "Google Gemini",
+    "color": "#8E75B2",
+    "svg": "assets/icons/svg/google_gemini.svg",
+    "png": "assets/icons/png/google_gemini.png"
+  },
+  "claude": {
+    "title": "Claude (Anthropic)",
+    "color": "#D97757",
+    "svg": "assets/icons/svg/claude.svg",
+    "png": "assets/icons/png/claude.png"
+  },
+  "anthropic": {
+    "title": "Anthropic",
+    "color": "#D97757",
+    "svg": "assets/icons/svg/anthropic.svg",
+    "png": "assets/icons/png/anthropic.png"
+  },
+  "deepseek": {
+    "title": "DeepSeek",
+    "color": "#4D6BFE",
+    "svg": "assets/icons/svg/deepseek.svg",
+    "png": "assets/icons/png/deepseek.png"
+  },
+  "mistral": {
+    "title": "Mistral AI",
+    "color": "#FA520F",
+    "svg": "assets/icons/svg/mistral.svg",
+    "png": "assets/icons/png/mistral.png"
+  },
+  "mistralai": {
+    "title": "Mistral AI",
+    "color": "#FA520F",
+    "svg": "assets/icons/svg/mistralai.svg",
+    "png": "assets/icons/png/mistralai.png"
+  },
+  "meta": {
+    "title": "Meta AI",
+    "color": "#0081FB",
+    "svg": "assets/icons/svg/meta.svg",
+    "png": "assets/icons/png/meta.png"
+  },
+  "llama": {
+    "title": "LLaMA (Meta)",
+    "color": "#9844FF",
+    "svg": "assets/icons/svg/llama.svg",
+    "png": "assets/icons/png/llama.png"
+  },
+  "huggingface": {
+    "title": "Hugging Face",
+    "color": "#FFD21E",
+    "svg": "assets/icons/svg/huggingface.svg",
+    "png": "assets/icons/png/huggingface.png"
+  },
+  "nvidia": {
+    "title": "NVIDIA",
+    "color": "#76B900",
+    "svg": "assets/icons/svg/nvidia.svg",
+    "png": "assets/icons/png/nvidia.png"
+  },
+  "perplexity": {
+    "title": "Perplexity AI",
+    "color": "#1FB8CD",
+    "svg": "assets/icons/svg/perplexity.svg",
+    "png": "assets/icons/png/perplexity.png"
+  },
+  "pytorch": {
+    "title": "PyTorch",
+    "color": "#EE4C2C",
+    "svg": "assets/icons/svg/pytorch.svg",
+    "png": "assets/icons/png/pytorch.png"
+  },
+  "tensorflow": {
+    "title": "TensorFlow",
+    "color": "#FF6F00",
+    "svg": "assets/icons/svg/tensorflow.svg",
+    "png": "assets/icons/png/tensorflow.png"
+  },
+  "google": {
+    "title": "Google",
+    "color": "#4285F4",
+    "svg": "assets/icons/svg/google.svg",
+    "png": "assets/icons/png/google.png"
+  },
+  "colab": {
+    "title": "Google Colab",
+    "color": "#F9AB00",
+    "svg": "assets/icons/svg/colab.svg",
+    "png": "assets/icons/png/colab.png"
+  },
+  "googlecolab": {
+    "title": "Google Colab",
+    "color": "#F9AB00",
+    "svg": "assets/icons/svg/googlecolab.svg",
+    "png": "assets/icons/png/googlecolab.png"
+  },
+  "deepmind": {
+    "title": "Google DeepMind",
+    "color": "#4285F4",
+    "svg": "assets/icons/svg/deepmind.svg",
+    "png": "assets/icons/png/deepmind.png"
+  },
+  "openrouter": {
+    "title": "OpenRouter",
+    "color": "#6366F1",
+    "svg": "assets/icons/svg/openrouter.svg",
+    "png": "assets/icons/png/openrouter.png"
+  },
+  "ollama": {
+    "title": "Ollama",
+    "color": "#FFFFFF",
+    "svg": "assets/icons/svg/ollama.svg",
+    "png": "assets/icons/png/ollama.png"
+  }
+}
